@@ -17,4 +17,17 @@ const authorRegisterValidation = [
     },
 ];
 
-module.exports = authorRegisterValidation;
+const libraryValidation = [
+    body('book_name').notEmpty().withMessage('Book name is required'),
+    body('description').notEmpty().withMessage('description is required'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            const errorMessages = errors.array().map((error) => error.msg);
+            return res.status(400).json({ success: false, error: errorMessages });
+        }
+        next();
+    },
+];
+module.exports = {authorRegisterValidation, libraryValidation};

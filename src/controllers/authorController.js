@@ -27,19 +27,19 @@ exports.logIn = catchAsyncError(async(req, res, next) => {
     const filter = (phone) ? {phone} : {email}
     const author = await Author.findOne(filter)
     if (!author) {
-        next(new ErrorHandler("Invalid Credentials"), 400);
+        next(new ErrorHandler("Invalid Credentials"), 401);
     }
     if(author.status == 'pending')
     {
-        next(new ErrorHandler("Your account is not approved yet! "), 400);
+        next(new ErrorHandler("Your account is not approved yet! "), 403);
     }
     else if(author.status == 'rejected')
     {
-        next(new ErrorHandler("Your account is rejected! you cannot login "), 400);
+        next(new ErrorHandler("Your account is rejected! you cannot login "), 403);
     }
     const comparePass = await bycrpt.compare(password, author.password);
     if (!comparePass) {
-        next(new ErrorHandler("Invalid Credentials"), 400);
+        next(new ErrorHandler("Invalid Credentials"), 401);
     }
     const accessToken = await genJwtToken(author);
     author._doc['jwtToken'] = accessToken;
@@ -54,7 +54,7 @@ exports.logIn = catchAsyncError(async(req, res, next) => {
 
 exports.getProfile = catchAsyncError(async(req, res, next) => {
     const userId = req.user._id;
-    const profile = await UserModel.findOne({ _id: userId }).select("email, first_name, last_name");
+    const profile = await Author.findOne({ _id: userId }).select({ _id : 0 ,first_name : 1, last_name : 1, email: 1});
     res.status(200).json({
         success: true,
         profile
