@@ -12,6 +12,6 @@ const schema = new mongoose.Schema({
     description : String
 }, { timestamps: true });
 
-const Library = new mongoose.model('library', schema);
+const Library = new mongoose.model('libraries', schema);
 
 module.exports = Library;

@@ -1,5 +1,5 @@
 const express = require('express');
-const authorRegisterValidation = require('../middlewares/authorValidation');
+const {authorRegisterValidation} = require('../middlewares/validation');
 const { authorSignUp, logIn, getProfile } = require('../controllers/authorController');
 const authorization = require('../middlewares/authorization');
 const router = express.Router();

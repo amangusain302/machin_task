@@ -11,4 +11,4 @@ const schema = new mongoose.Schema({
 
 const Admin = new mongoose.model('admin', schema);
 
-module.exports = Author;
+module.exports = Admin;
